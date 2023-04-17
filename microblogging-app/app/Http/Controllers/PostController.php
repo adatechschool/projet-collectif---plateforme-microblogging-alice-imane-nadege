@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -14,6 +16,14 @@ class PostController extends Controller
     {
         $posts = Post::all();
         return view('dashboard', ['posts' => $posts]);
+    }
+
+    public function showpostUser(Request $request)
+    {
+        $email = Auth::user()->email;
+        $user_Id = User::where('email',$email)->pluck('id')->first();
+        $posts = Post::where('user_id', $user_Id)->get();
+        return view('mypage', ['posts' => $posts]);
     }
 
     /**
