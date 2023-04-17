@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -18,7 +19,7 @@ class PostController extends Controller
         return view('dashboard', ['posts' => $posts]);
     }
 
-    public function showpostUser(Request $request)
+    public function showpostUser()
     {
         $email = Auth::user()->email;
         $user_Id = User::where('email',$email)->pluck('id')->first();
@@ -29,17 +30,31 @@ class PostController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
+    // public function create()
+    // {
+    //     return view('mypage');
+    // }
 
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
-        //
+        $user_Id = Auth::id();
+
+        $validatedData = $request->validate([
+            'description' => 'required|string',
+            'img_url' => 'required|string',
+        ]);
+
+        $post = new Post([
+            'description' => $validatedData['description'],
+            'img_url' => $validatedData['img_url'],
+            'user_id' => $user_Id,
+        ]);
+        $post->save();
+        
+        return redirect()->route('mypage')->with('success', 'Post successfully saved');
     }
 
     /**

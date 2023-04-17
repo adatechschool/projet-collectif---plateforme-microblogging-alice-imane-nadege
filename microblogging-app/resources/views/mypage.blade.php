@@ -15,12 +15,26 @@
         </div>
     </div>
 
-    <div class="py-6">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <x-input-label for="newpost" :value="__('Newpost')" />
-            <x-text-input id="newpost" name="newpost" type="text" class="mt-1 block w-full" autocomplete="write a new post" />          
-        </div>
-    </div>
+    <form action="" method="POST" class="mt-6 space-y-6">
+                        @csrf
+                        <div class="row">
+                            <div class="control-group col-12">
+                                <label for="description">Description</label>
+                                <input type="text" id="title" class="form-control" name="description"
+                                       placeholder="Enter Post description" required>
+                            </div>
+                            <div class="control-group col-12 mt-2">
+                                <label for="img_url">URL</label>
+                                <textarea id="body" class="form-control" name="img_url" placeholder="Enter img_url"
+                                          rows="" required></textarea>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="control-group col-12 text-center">
+                            <x-primary-button>{{ __('Submit') }}</x-primary-button>
+                            </div>
+                        </div>
+    </form>
 
     <div class="py-5">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
