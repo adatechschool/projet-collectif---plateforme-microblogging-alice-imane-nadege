@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -15,25 +14,18 @@ class PostController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderBy('created_at','desc')->get();
         return view('dashboard', ['posts' => $posts]);
     }
 
     public function showpostUser()
     {
-        $email = Auth::user()->email;
-        $user_Id = User::where('email',$email)->pluck('id')->first();
-        $posts = Post::where('user_id', $user_Id)->get();
+        $user_Id = Auth::user()->id;
+        $posts = Post::where('user_id', $user_Id)
+            ->orderBy('created_at','desc')
+            ->get();
         return view('mypage', ['posts' => $posts]);
     }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    // public function create()
-    // {
-    //     return view('mypage');
-    // }
 
     /**
      * Store a newly created resource in storage.
