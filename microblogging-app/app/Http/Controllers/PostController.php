@@ -27,6 +27,14 @@ class PostController extends Controller
         return view('mypage', ['posts' => $posts]);
     }
 
+    public function showAnotherPage(Request $request, $id)
+    {
+        $posts = Post::where('user_id', $id)
+        ->orderBy('created_at','desc')
+        ->get();
+        return view('mypage', ['posts' => $posts]);
+    }
+
     /**
      * Store a newly created resource in storage.
      */

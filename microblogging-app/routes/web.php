@@ -23,6 +23,7 @@ Route::get('/dashboard', [PostController::class, 'index'])->middleware(['auth', 
 
 Route::middleware('web')->group(function () {
     Route::get('/mypage', [PostController::class, 'showpostUser'])->middleware(['auth', 'verified'])->name('mypage');
+    Route::get('/mypage/{id?}', [PostController::class, 'showAnotherPage'])->middleware(['auth', 'verified'])->name('mypage.another');
     Route::post('/mypage',[PostController::class, 'store'])->middleware(['auth', 'verified'])->name('mypage.store');
     /*like management*/
     Route::post('/like-post/{id}',[PostController::class,'likePost'])->middleware(['auth', 'verified'])->name('like.post');
