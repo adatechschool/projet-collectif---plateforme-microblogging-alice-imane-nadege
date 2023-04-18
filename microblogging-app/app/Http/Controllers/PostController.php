@@ -10,33 +10,47 @@ use Illuminate\Http\Request;
 class PostController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display all posts on dashboard page.
      */
     public function index()
     {
         $posts = Post::orderBy('created_at','desc')->get();
         return view('dashboard', ['posts' => $posts]);
     }
-
+    /**
+     * Display biography.
+    */
+    public function retrieveBio($id)
+    {
+        $user = User::find($id);
+        $biography = $user->biography;
+        return $biography;
+    }
+    /**
+     * Display posts from the loggued user.
+     */
     public function showpostUser()
     {
         $user_Id = Auth::user()->id;
         $posts = Post::where('user_id', $user_Id)
             ->orderBy('created_at','desc')
             ->get();
-        return view('mypage', ['posts' => $posts]);
+        $biography = $this->retrieveBio($user_Id);
+        return view('mypage', compact('posts','biography'));
     }
-
+    /**
+     * Display posts from the visited user profile.
+     */
     public function showAnotherPage(Request $request, $id)
     {
         $posts = Post::where('user_id', $id)
         ->orderBy('created_at','desc')
         ->get();
-        return view('mypage', ['posts' => $posts]);
+        $biography = $this->retrieveBio($id);
+        return view('mypage', compact('posts','biography'));
     }
-
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created post in storage.
      */
     public function store(Request $request)
     {
@@ -102,7 +116,7 @@ class PostController extends Controller
         $post->like();
         $post->save();
 
-        return redirect()->back()->with('message','Post Like undo successfully!');
+        return redirect()->back()->with('message','Post Like do successfully!');
     }
 
     public function unlikePost($id)
