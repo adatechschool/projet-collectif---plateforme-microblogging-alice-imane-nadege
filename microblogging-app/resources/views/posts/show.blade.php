@@ -5,6 +5,7 @@
     {{$post->user->name}}
   </h2> 
     {{$post->description}}
+    @include('../components/likes')
   <img src="{{ $post->img_url }}">
 </x-guest-layout>
 @endforeach

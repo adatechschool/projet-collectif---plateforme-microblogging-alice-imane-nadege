@@ -82,4 +82,27 @@ class PostController extends Controller
     {
         //
     }
+
+    /*Like gestion*/
+    /*
+    with this tuto https://larainfo.com/blogs/how-to-create-post-like-and-unlike-button-in-laravel
+    composer require rtconner/laravel-likeable
+    */
+    public function likePost($id)
+    {
+        $post = Post::find($id);
+        $post->like();
+        $post->save();
+
+        return redirect()->back()->with('message','Post Like undo successfully!');
+    }
+
+    public function unlikePost($id)
+    {
+        $post = Post::find($id);
+        $post->unlike();
+        $post->save();
+        
+        return redirect()->back()->with('message','Post Like undo successfully!');
+    }
 }

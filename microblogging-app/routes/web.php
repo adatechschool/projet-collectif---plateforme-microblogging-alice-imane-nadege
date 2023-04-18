@@ -24,6 +24,9 @@ Route::get('/dashboard', [PostController::class, 'index'])->middleware(['auth', 
 Route::middleware('web')->group(function () {
     Route::get('/mypage', [PostController::class, 'showpostUser'])->middleware(['auth', 'verified'])->name('mypage');
     Route::post('/mypage',[PostController::class, 'store'])->middleware(['auth', 'verified'])->name('mypage.store');
+    /*like management*/
+    Route::post('/like-post/{id}',[PostController::class,'likePost'])->middleware(['auth', 'verified'])->name('like.post');
+    Route::post('/unlike-post/{id}',[PostController::class,'unlikePost'])->middleware(['auth', 'verified'])->name('unlike.post');
 });
 
 Route::middleware('auth')->group(function () {
