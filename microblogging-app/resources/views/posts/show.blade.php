@@ -7,5 +7,10 @@
     {{$post->description}}
     @include('../components/likes')
   <img src="{{ $post->img_url }}">
+  <form action="{{ route('posts.destroy', $post->id) }}">
+    @csrf
+    @method('DELETE')
+    <button type="submit" class="btn btn-danger">Delete</button>
+  </form>
 </x-guest-layout>
 @endforeach
