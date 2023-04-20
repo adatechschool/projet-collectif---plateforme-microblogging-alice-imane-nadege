@@ -26,7 +26,7 @@ Route::middleware('web')->group(function () {
     Route::get('/mypage/{id?}', [PostController::class, 'showAnotherPage'])->middleware(['auth', 'verified'])->name('mypage.another');
     Route::post('/mypage',[PostController::class, 'store'])->middleware(['auth', 'verified'])->name('mypage.store');
     /*delete a post*/
-    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->middleware(['auth', 'verified'])->name('posts.destroy');
+    Route::delete('/posts/{id}', [PostController::class, 'destroy'])->middleware(['auth', 'verified'])->name('posts.destroy');
     /*like management*/
     Route::post('/like-post/{id}',[PostController::class,'likePost'])->middleware(['auth', 'verified'])->name('like.post');
     Route::post('/unlike-post/{id}',[PostController::class,'unlikePost'])->middleware(['auth', 'verified'])->name('unlike.post');

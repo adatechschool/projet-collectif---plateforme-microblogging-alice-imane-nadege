@@ -88,7 +88,6 @@ class PostController extends Controller
      */
     public function delete(Request $request, $id)
     {
-
         $post = Post::find($id);
        
         if (!$post) {
@@ -98,10 +97,10 @@ class PostController extends Controller
         if ($post->user_id != Auth::id()) {
             return redirect()->back()->with('error', 'You are not authorized to delete this post.');
         }
-    
+
         $post->destroy();
     
-        return redirect()->back()->with('success', 'Post deleted successfully.');
+        return redirect()->view('mypage', ['posts' => $posts]);
     }
 
     /*Like gestion*/
