@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 
 /*
 |--------------------------------------------------------------------------
@@ -14,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
+Log::emergency('page de routes.');
 Route::get('/', function () {
     return view('welcome');
 });
@@ -22,6 +23,7 @@ Route::get('/', function () {
 Route::get('/dashboard', [PostController::class, 'index'])->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('web')->group(function () {
+    
     Route::get('/mypage', [PostController::class, 'showpostUser'])->middleware(['auth', 'verified'])->name('mypage');
     Route::get('/mypage/{id?}', [PostController::class, 'showAnotherPage'])->middleware(['auth', 'verified'])->name('mypage.another');
     Route::post('/mypage',[PostController::class, 'store'])->middleware(['auth', 'verified'])->name('mypage.store');
@@ -38,6 +40,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::resource('posts', PostController::class);
+//Route::resource('posts', PostController::class);
 
 require __DIR__.'/auth.php';

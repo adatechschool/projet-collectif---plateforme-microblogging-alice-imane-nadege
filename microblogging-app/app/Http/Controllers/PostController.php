@@ -6,6 +6,8 @@ use App\Models\Post;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Log;
 
 class PostController extends Controller
 {
@@ -14,39 +16,44 @@ class PostController extends Controller
      */
     public function index()
     {
+
+        Log::emergency('PostController. Debut fonction index ');
         $posts = Post::orderBy('created_at','desc')->get();
         return view('dashboard', ['posts' => $posts]);
     }
-
+    
     public function showpostUser()
     {
+        Log::emergency('PostController.showpostUser ');
         $user_Id = Auth::user()->id;
         $posts = Post::where('user_id', $user_Id)
-            ->orderBy('created_at','desc')
-            ->get();
+        ->orderBy('created_at','desc')
+        ->get();
         return view('mypage', ['posts' => $posts]);
     }
-
+    
     public function showAnotherPage(Request $request, $id)
     {
+        Log::emergency('PostController.showAnotherPage ');
         $posts = Post::where('user_id', $id)
         ->orderBy('created_at','desc')
         ->get();
         return view('mypage', ['posts' => $posts]);
     }
-
+    
     /**
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
     {
+        Log::emergency('PostController.store ');
         $user_Id = Auth::id();
-
+        
         $validatedData = $request->validate([
             'description' => 'required|string',
             'img_url' => 'required|string',
         ]);
-
+        
         $post = new Post([
             'description' => $validatedData['description'],
             'img_url' => $validatedData['img_url'],
@@ -56,12 +63,14 @@ class PostController extends Controller
         
         return redirect()->route('mypage')->with('success', 'Post successfully saved');
     }
-
+    
     /**
      * Display the specified resource.
      */
     public function show(Post $post)
     {
+        Log::emergency('PostController.show ');
+        
         return view('posts.show', [
             'post' => $post
         ]);
@@ -86,9 +95,9 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function delete(Request $request, $id)
+    public function destroy($id)
     {
-        $posts = Post::orderBy('created_at','desc')->get();
+        Log::emergency('Debut fonction delete'.$id);
         $post = Post::find($id);
        
         if (!$post) {
@@ -99,9 +108,10 @@ class PostController extends Controller
             return redirect()->back()->with('error', 'You are not authorized to delete this post.');
         }
 
-        $post->destroy();
+        $post->delete();
     
-        return redirect()->view('mypage', ['posts' => $posts]);
+        //return redirect()->view('mypage', ['posts' => $posts]);
+        return Redirect::to('/');
     }
 
     /*Like gestion*/
