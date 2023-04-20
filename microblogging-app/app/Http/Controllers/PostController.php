@@ -88,6 +88,7 @@ class PostController extends Controller
      */
     public function delete(Request $request, $id)
     {
+        $posts = Post::orderBy('created_at','desc')->get();
         $post = Post::find($id);
        
         if (!$post) {
